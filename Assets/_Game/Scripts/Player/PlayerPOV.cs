@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class PlayerPOV : MonoBehaviour
 {
-    //First-person view
-    public float senX;
-    public float senY;
-    public Transform orientation;
-    float xRotate;
-    float yRotate;
+    //[Header("Camera")]
+    [SerializeField] private Transform playerCam = null;
+    [SerializeField] float mouseSensitivity = 1f;
+    [SerializeField][Range(0f, 0.5f)] float mouseSmoothDamp = 0.025f;
+
+    float cameraPitch = 0.0f; //keep track camera x rotation
+    bool lockCursor = true; //hide cursor from screen
+
+    Vector2 currentMouseDelta = Vector2.zero;
+    Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
     private void Start()
     {
@@ -16,29 +20,37 @@ public class PlayerPOV : MonoBehaviour
 
     private void Update()
     {
-        MouseInput();
+        MouseLook();
     }
 
     private void MouseLock()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
-    private void MouseInput()
+    private void MouseLook()
     {
-        //mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        float mouseY = Input.GetAxisRaw("Mouse Y");
+        if (playerCam != null)
+        {
+            Vector2 targetMouseDelta = new(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-        yRotate += mouseX;
+            //changes a vector to desired goal overtime for smooth transition
+            currentMouseDelta = Vector2.SmoothDamp(currentMouseDelta, targetMouseDelta, ref currentMouseDeltaVelocity, mouseSmoothDamp);
 
-        xRotate -= mouseY;
-        xRotate = Mathf.Clamp(xRotate, -90f, 90f);
+            //Horizontal look
+            transform.Rotate(currentMouseDelta.x * mouseSensitivity * Time.deltaTime * Vector3.up);
 
-        //rotate cam
-        transform.rotation = Quaternion.Euler(xRotate, yRotate, 0f);
-        //rotate player
-        orientation.rotation = Quaternion.Euler(0f, yRotate, 0f);
+            //Vertical look
+            //avoid invert y axis
+            cameraPitch -= currentMouseDelta.y * mouseSensitivity * Time.deltaTime;
+            //avoid camera flip upside down
+            cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
+
+            playerCam.localEulerAngles = Vector3.right * cameraPitch;
+        }
     }
 }

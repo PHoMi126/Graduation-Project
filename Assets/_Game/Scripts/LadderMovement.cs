@@ -7,6 +7,8 @@ public class LadderMovement : MonoBehaviour
     [SerializeField] PlayerMovement moveInput;
     [SerializeField] KeyCode up;
     [SerializeField] KeyCode down;
+
+    PlayerMovement player;
     bool stickToLadder;
 
     private void Start()

@@ -46,7 +46,7 @@ public class PlayerPOV : MonoBehaviour
 
             //Vertical look
             cameraPitch -= currentMouseDelta.y * mouseSensitivity * Time.deltaTime; //avoid invert y axis
-            cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f); //avoid camera flip upside down
+            cameraPitch = Mathf.Clamp(cameraPitch, -75f, 90f); //avoid camera flip upside down
 
             playerCam.localEulerAngles = Vector3.right * cameraPitch;
         }

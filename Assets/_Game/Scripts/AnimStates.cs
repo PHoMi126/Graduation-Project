@@ -9,7 +9,7 @@ public class AnimStates : MonoBehaviour
 
     public enum AnimState
     {
-        idle, walk, sprint, jump, pistolPose
+        idle, pistolIdle
     }
 
     public void ChangeAnim(AnimState _state)

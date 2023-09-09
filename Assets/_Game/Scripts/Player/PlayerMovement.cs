@@ -4,9 +4,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Walk/Sprint")]
-    [SerializeField] float walkSpeed = 1f;
-    [SerializeField] float sprintSpeed = 4f;
-    [SerializeField] KeyCode sprintKey;
+    [SerializeField] KeyCode forward = KeyCode.W;
+    [SerializeField] KeyCode backward = KeyCode.S;
+    [SerializeField] KeyCode left = KeyCode.A;
+    [SerializeField] KeyCode right = KeyCode.D;
+    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField][Range(0f, 0.5f)] float moveSmoothDamp = 0.25f;
 
     [Header("Fall")]
@@ -15,15 +17,21 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     [SerializeField] AnimationCurve jumpFallOff;
     [SerializeField] float jumpMultiplier;
-    [SerializeField] KeyCode jumpKey;
+    [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     [Header("Crouch")]
     [SerializeField] float standHeight;
     [SerializeField] float crouchHeight;
-    [SerializeField] KeyCode crouchKey;
+    [SerializeField] KeyCode crouchKey = KeyCode.C;
 
     [Header("Animation")]
     [SerializeField] AnimStates animStates;
+
+    [Header("Player Speed")]
+    [SerializeField] float forwardSpeed = 1f;
+    [SerializeField] float notForwardSpeed = 0.5f;
+    [SerializeField] float sprintSpeed = 4f;
+    [SerializeField] float crouchSpeed = 1f;
 
     CharacterController player = null;
 
@@ -39,8 +47,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         player = GetComponent<CharacterController>();
-        moveSpeed = walkSpeed;
-        animStates.ChangeAnim(AnimStates.AnimState.pistolPose);
+        moveSpeed = forwardSpeed;
+        animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
     }
 
     // Update is called once per frame
@@ -68,16 +76,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * moveSpeed + Vector3.up * velocityY;
 
         player.Move(velocity * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
-        {
-            animStates.ChangeAnim(AnimStates.AnimState.walk);
-        }
-
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D))
-        {
-            animStates.ChangeAnim(AnimStates.AnimState.idle);
-        }
     }
 
     private void Jump()
@@ -97,13 +95,12 @@ public class PlayerMovement : MonoBehaviour
             float jumpForce = jumpFallOff.Evaluate(timeInAir); //curve value
             player.Move(jumpForce * jumpMultiplier * Time.deltaTime * Vector3.up);
             timeInAir += Time.deltaTime;
-            animStates.ChangeAnim(AnimStates.AnimState.jump);
             yield return null;
         }
         while (!player.isGrounded
                 && player.collisionFlags != CollisionFlags.Above /* fall down if touch ceiling*/);
         isJumping = false;
-        animStates.ChangeAnim(AnimStates.AnimState.idle);
+        animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
     }
 
     private void Sprint()
@@ -112,14 +109,12 @@ public class PlayerMovement : MonoBehaviour
         {
             isSprinting = true;
             moveSpeed = sprintSpeed;
-            animStates.ChangeAnim(AnimStates.AnimState.sprint);
         }
 
         if (Input.GetKeyUp(sprintKey) && isSprinting)
         {
             isSprinting = false;
-            moveSpeed = walkSpeed;
-            animStates.ChangeAnim(AnimStates.AnimState.idle);
+            moveSpeed = forwardSpeed;
         }
     }
 
@@ -129,12 +124,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isCrouching = true;
             player.height = crouchHeight;
+            moveSpeed = crouchSpeed;
         }
 
         if (Input.GetKeyUp(crouchKey) && isCrouching)
         {
             isCrouching = false;
             player.height = standHeight;
+            moveSpeed = forwardSpeed;
         }
     }
 }

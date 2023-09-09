@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: C_Mk23Mod0_ReloadEmpty
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: 358befdcb96e71648ac233f0b5b36225, type: 2}
-  mask: {fileID: 0}
+  spineRotation: {x: 0, y: 0, z: 0, w: 1}
+  mask: {fileID: 31900000, guid: 572701504aa6c17498da75bfc9ecc1ea, type: 2}
   blendTime:
     blendInTime: 0.15
     blendOutTime: 0.2

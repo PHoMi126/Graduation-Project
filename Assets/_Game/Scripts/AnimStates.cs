@@ -9,7 +9,8 @@ public class AnimStates : MonoBehaviour
 
     public enum AnimState
     {
-        idle, pistolIdle
+        idle,
+        weaponIdle, weaponShoot, weaponSprint, weaponReload
     }
 
     public void ChangeAnim(AnimState _state)
@@ -18,6 +19,7 @@ public class AnimStates : MonoBehaviour
             return;
         if (currentAnimState != _state)
         {
+            //animator.ResetTrigger(currentAnimState.ToString());
             currentAnimState = _state;
             animator.SetTrigger(currentAnimState.ToString());
         }

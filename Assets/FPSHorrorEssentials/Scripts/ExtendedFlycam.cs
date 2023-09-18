@@ -13,7 +13,7 @@ public class ExtendedFlycam : MonoBehaviour
         Free as in speech, and free as in beer.
  
     FEATURES
-        WASD/Arrows:    Movement
+        WASD/Arrows:    WASD
                   Q:    Climb
                   E:    Drop
                       Shift:    Move faster

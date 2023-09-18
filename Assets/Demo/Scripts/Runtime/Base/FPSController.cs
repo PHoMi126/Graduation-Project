@@ -81,7 +81,7 @@ namespace Demo.Scripts.Runtime.Base
         [SerializeField] private float sensitivity;
         [SerializeField] private Vector2 freeLookAngle;
         
-        [Header("Movement")] 
+        [Header("WASD")] 
         [SerializeField] private float curveLocomotionSmoothing = 2f;
         [SerializeField] private float moveSmoothing = 2f;
         [SerializeField] private float sprintSpeed = 3f;

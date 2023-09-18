@@ -4,16 +4,16 @@ public class LadderMovement : MonoBehaviour
 {
     [SerializeField] Transform pMovement;
     [SerializeField] float climbSpeed = 0f;
-    [SerializeField] PlayerMovement moveInput;
+    [SerializeField] PlayerAction moveInput;
     [SerializeField] KeyCode up;
     [SerializeField] KeyCode down;
 
-    PlayerMovement player;
+    PlayerAction player;
     bool stickToLadder;
 
     private void Start()
     {
-        moveInput = GetComponent<PlayerMovement>();
+        moveInput = GetComponent<PlayerAction>();
         stickToLadder = false;
     }
 

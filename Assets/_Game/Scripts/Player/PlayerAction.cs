@@ -35,7 +35,7 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] float sprintSpeed = 4f;
     [SerializeField] float crouchSpeed = 1f;
 
-    CharacterController player = null;
+    internal CharacterController player = null;
 
     Vector2 currentDir = Vector2.zero;
     Vector2 currentDirVelocity = Vector2.zero;
@@ -99,13 +99,13 @@ public class PlayerAction : MonoBehaviour
 
     private void Sprint()
     {
-        if (Input.GetKeyDown(sprintKey))
+        if (Input.GetKeyDown(sprintKey) && !isSprinting)
         {
             isSprinting = true;
             moveSpeed = sprintSpeed;
         }
 
-        if (Input.GetKeyUp(sprintKey))
+        if (Input.GetKeyUp(sprintKey) && isSprinting)
         {
             isSprinting = false;
             moveSpeed = forwardSpeed;
@@ -114,14 +114,14 @@ public class PlayerAction : MonoBehaviour
 
     private void Crouch()
     {
-        if (Input.GetKeyDown(crouchKey))
+        if (Input.GetKeyDown(crouchKey) && !isCrouching)
         {
             isCrouching = true;
             player.height = crouchHeight;
             moveSpeed = crouchSpeed;
         }
 
-        if (Input.GetKeyUp(crouchKey))
+        if (Input.GetKeyUp(crouchKey) && isCrouching)
         {
             isCrouching = false;
             player.height = standHeight;

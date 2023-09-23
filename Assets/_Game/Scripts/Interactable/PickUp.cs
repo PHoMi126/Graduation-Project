@@ -10,7 +10,7 @@ public class PickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animStates.ChangeAnim(AnimStates.AnimState.idle);
+        animStates.ChangeAnimTrigger(AnimStates.AnimState.idle);
         weaponAnim.enabled = false;
     }
 

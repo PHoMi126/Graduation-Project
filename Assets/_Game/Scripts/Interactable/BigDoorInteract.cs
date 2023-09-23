@@ -8,13 +8,21 @@ public class BigDoorInteract : MonoBehaviour
     [SerializeField] Transform door2;
     [SerializeField] float cycleLength = 2f;
 
-    bool isOpenable = true;
+    bool isOpenable = false;
+    bool open = false;
 
     private void Update()
     {
-        if (door1 != null && door2 != null)
+        if (isOpenable)
         {
-            DoorAction();
+            if (open == true)
+            {
+                DoorOpen();
+            }
+            else
+            {
+                DoorClose();
+            }
         }
     }
 
@@ -34,17 +42,23 @@ public class BigDoorInteract : MonoBehaviour
         }
     }
 
-    private void DoorAction()
+    private void DoorOpen()
     {
-        if (isOpenable && Input.GetKeyDown(interactKey))
+        if (Input.GetKeyDown(interactKey))
         {
-            door1.DORotate(new Vector3(0, 90, 0), cycleLength * 0.5f)
-            .SetLoops(loops: (int)LoopType.Yoyo)
-            .SetEase(Ease.Linear);
+            open = !open;
+            door1.DORotate(new Vector3(0, 90, 0), cycleLength * 0.1f).SetEase(Ease.Linear);
+            door2.DORotate(new Vector3(0, -90, 0), cycleLength * 0.1f).SetEase(Ease.Linear);
+        }
+    }
 
-            door2.DORotate(new Vector3(0, -90, 0), cycleLength * 0.5f)
-            .SetLoops(loops: (int)LoopType.Yoyo)
-            .SetEase(Ease.Linear);
+    private void DoorClose()
+    {
+        if (Input.GetKeyDown(interactKey))
+        {
+            open = !open;
+            door1.DORotate(new Vector3(0, 0, 0), cycleLength * 0.1f).SetEase(Ease.Linear);
+            door2.DORotate(new Vector3(0, 0, 0), cycleLength * 0.1f).SetEase(Ease.Linear);
         }
     }
 }

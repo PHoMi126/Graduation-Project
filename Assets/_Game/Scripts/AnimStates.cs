@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AnimStates : MonoBehaviour
 {
-    [SerializeField] Animator animator;
+    [SerializeField] internal Animator animator;
 
     private AnimState currentAnimState;
     bool isDead;
@@ -10,10 +10,18 @@ public class AnimStates : MonoBehaviour
     public enum AnimState
     {
         idle,
-        weaponIdle, weaponShoot, weaponSprint, weaponReload
+        switchWeapon,
+        pistolIdle, pistolShoot, pistolSprint, pistolReload,
+        rifleIdle, rifleShoot, rifleSprint, rifleReload,
+        revolverIdle, revolverShoot, revolverSprint, revolverReload
     }
 
-    public void ChangeAnim(AnimState _state)
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    public void ChangeAnimTrigger(AnimState _state)
     {
         if (isDead == true)
             return;

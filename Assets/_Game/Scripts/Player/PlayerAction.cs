@@ -35,6 +35,9 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] float sprintSpeed = 4f;
     [SerializeField] float crouchSpeed = 1f;
 
+    [Header("Weapon bob")]
+    [SerializeField] WeaponBob weaponBob;
+
     internal CharacterController player = null;
 
     Vector2 currentDir = Vector2.zero;
@@ -103,12 +106,14 @@ public class PlayerAction : MonoBehaviour
         {
             isSprinting = true;
             moveSpeed = sprintSpeed;
+            weaponBob.enabled = false;
         }
 
         if (Input.GetKeyUp(sprintKey) && isSprinting)
         {
             isSprinting = false;
             moveSpeed = forwardSpeed;
+            weaponBob.enabled = true;
         }
     }
 

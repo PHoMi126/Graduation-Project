@@ -1873,6 +1873,7 @@ MonoBehaviour:
   notForwardSpeed: 2
   sprintSpeed: 7
   crouchSpeed: 1.5
+  weaponBob: {fileID: 2095799462}
 --- !u!114 &277394930
 MonoBehaviour:
   m_ObjectHideFlags: 0

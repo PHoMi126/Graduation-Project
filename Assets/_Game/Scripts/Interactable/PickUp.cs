@@ -6,11 +6,10 @@ public class PickUp : MonoBehaviour
     [SerializeField] WeaponState weaponAnim;
     [SerializeField] Transform pistol;
 
-    bool isPickable = true;
     // Start is called before the first frame update
     void Start()
     {
-        animStates.ChangeAnimTrigger(AnimStates.AnimState.idle);
+        animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
         weaponAnim.enabled = false;
     }
 

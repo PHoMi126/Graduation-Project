@@ -11,6 +11,7 @@ public class WeaponState : MonoBehaviour
 
     [Header("Weapon Active")]
     [SerializeField] GameObject[] weapons;
+    [SerializeField] KeyCode meleeSlot;
     [SerializeField] KeyCode pistolSlot;
     [SerializeField] KeyCode revolverSlot;
 
@@ -24,16 +25,17 @@ public class WeaponState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolIdle);
+        animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
         AudioSource.PlayClipAtPoint(clips[0], transform.position, volume);
-        weapons[0].SetActive(true);
-        weapons[1].SetActive(false);
+        weapons[0].SetActive(false);
+        weapons[1].SetActive(true);
+        weapons[2].SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Shoot();
+        Attack();
         Reload();
         Sprint();
         ChangeWeapon();
@@ -41,10 +43,10 @@ public class WeaponState : MonoBehaviour
 
     private void ChangeWeapon()
     {
-        if (Input.GetKeyDown(pistolSlot))
+        if (Input.GetKeyDown(meleeSlot))
         {
-            animStates.ChangeAnimTrigger(AnimStates.AnimState.switchWeapon);
-            animStates.animator.SetInteger("weaponType", 2);
+            animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
+            animStates.animator.SetInteger("weaponType", 1);
 
             //lambda
             StartCoroutine(IEDelayAction(
@@ -52,26 +54,45 @@ public class WeaponState : MonoBehaviour
                 {
                     weapons[0].SetActive(true);
                     weapons[1].SetActive(false);
+                    weapons[2].SetActive(false);
                 }, 0.5f));
 
-            animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolIdle);
+            animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
+        }
+
+        if (Input.GetKeyDown(pistolSlot))
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
+            animStates.animator.SetInteger("weaponType", 2);
+
+            //lambda
+            StartCoroutine(IEDelayAction(
+                () =>
+                {
+                    weapons[0].SetActive(false);
+                    weapons[1].SetActive(true);
+                    weapons[2].SetActive(false);
+                }, 0.5f));
+
+            animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
         }
 
         if (Input.GetKeyDown(revolverSlot))
         {
-            animStates.ChangeAnimTrigger(AnimStates.AnimState.switchWeapon);
+            animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
             animStates.animator.SetInteger("weaponType", 4);
 
             StartCoroutine(IEDelayAction(
                 () =>
                 {
                     weapons[0].SetActive(false);
-                    weapons[1].SetActive(true);
+                    weapons[1].SetActive(false);
+                    weapons[2].SetActive(true);
                 }, 0.5f));
 
-            animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverIdle);
+            animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
 
-            //StartCoroutine(IEDelayAction(Shoot, 1));
+            //StartCoroutine(IEDelayAction(Attack, 1));
 
         }
     }
@@ -82,19 +103,25 @@ public class WeaponState : MonoBehaviour
         action.Invoke();
     }
 
-    private void Shoot()
+    private void Attack()
     {
         if (Input.GetMouseButtonDown(0))
         {
             if (weapons[0].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolShoot);
-                AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
+                animStates.ChangeAnim(AnimStates.AnimState.meleeAtk);
+                //AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
             }
 
             if (weapons[1].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverShoot);
+                animStates.ChangeAnim(AnimStates.AnimState.pistolShoot);
+                AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
+            }
+
+            if (weapons[2].activeSelf)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverShoot);
             }
         }
 
@@ -102,12 +129,17 @@ public class WeaponState : MonoBehaviour
         {
             if (weapons[0].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolIdle);
+                animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
             }
 
             if (weapons[1].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverIdle);
+                animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+            }
+
+            if (weapons[2].activeSelf)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
             }
         }
     }
@@ -118,27 +150,27 @@ public class WeaponState : MonoBehaviour
         {
             if (Input.GetKeyDown(reload))
             {
-                if (weapons[0].activeSelf)
-                {
-                    animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolReload);
-                }
-
                 if (weapons[1].activeSelf)
                 {
-                    animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverReload);
+                    animStates.ChangeAnim(AnimStates.AnimState.pistolReload);
+                }
+
+                if (weapons[2].activeSelf)
+                {
+                    animStates.ChangeAnim(AnimStates.AnimState.revolverReload);
                 }
             }
         }
         else
         {
-            if (weapons[0].activeSelf)
-            {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolIdle);
-            }
-
             if (weapons[1].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverIdle);
+                animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+            }
+
+            if (weapons[2].activeSelf)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
             }
         }
     }
@@ -150,12 +182,17 @@ public class WeaponState : MonoBehaviour
             isSprinting = true;
             if (weapons[0].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolSprint);
+                animStates.ChangeAnim(AnimStates.AnimState.meleeSprint);
             }
 
             if (weapons[1].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverSprint);
+                animStates.ChangeAnim(AnimStates.AnimState.pistolSprint);
+            }
+
+            if (weapons[2].activeSelf)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverSprint);
             }
         }
 
@@ -164,12 +201,17 @@ public class WeaponState : MonoBehaviour
             isSprinting = false;
             if (weapons[0].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.pistolIdle);
+                animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
             }
 
             if (weapons[1].activeSelf)
             {
-                animStates.ChangeAnimTrigger(AnimStates.AnimState.revolverIdle);
+                animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+            }
+
+            if (weapons[2].activeSelf)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
             }
         }
     }

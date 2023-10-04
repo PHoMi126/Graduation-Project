@@ -9,11 +9,15 @@ public class AnimStates : MonoBehaviour
 
     public enum AnimState
     {
-        idle,
+        //Player
         switchWeapon,
+        meleeIdle, meleeAtk, meleeSprint,
         pistolIdle, pistolShoot, pistolSprint, pistolReload,
         rifleIdle, rifleShoot, rifleSprint, rifleReload,
-        revolverIdle, revolverShoot, revolverSprint, revolverReload
+        revolverIdle, revolverShoot, revolverSprint, revolverReload,
+
+        //Enemy
+        zIdle, zAttack, zDead
     }
 
     void Start()
@@ -21,7 +25,7 @@ public class AnimStates : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void ChangeAnimTrigger(AnimState _state)
+    public void ChangeAnim(AnimState _state)
     {
         if (isDead == true)
             return;

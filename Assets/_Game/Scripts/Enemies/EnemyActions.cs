@@ -3,12 +3,18 @@ using UnityEngine.AI;
 
 public class EnemyActions : MonoBehaviour
 {
+    [Header("NavMesh")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] float range; //radius of sphere
     [SerializeField] Transform centrePoint; //centre of the area the agent wants to move around in
                                             //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
+    [Header("Animations")]
     [SerializeField] AnimStates animStates;
     [SerializeField] float waitTimer = 0f;
+
+    [Header("GameObjects")]
+    [SerializeField] GameObject zombie;
+    [SerializeField] PlayerDetection playerDetect;
 
     bool isDead;
     void Start()
@@ -18,37 +24,13 @@ public class EnemyActions : MonoBehaviour
 
     void Update()
     {
-        waitTimer += Time.deltaTime;
-        if (animStates != null)
+        if (playerDetect.FindTheTarget() != null)
         {
-            if (animStates.animator.GetCurrentAnimatorStateInfo(0).IsName("zDead"))
-            {
-                Invoke(nameof(Dead), 2.2f);
-                agent.isStopped = true;
-            }
-            else
-            {
-                if (agent.remainingDistance <= agent.stoppingDistance) //done with path
-                {
-                    //animStates.ChangeAnim(AnimStates.AnimState.zIdle);
-
-                    if (RandomPoint(centrePoint.position, range, out Vector3 point) && waitTimer >= 4f) //pass in our centre point and radius of area
-                    {
-                        waitTimer = 0f;
-                        Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f); //so you can see with gizmos
-                        agent.SetDestination(point);
-                    }
-                }
-
-                /* animStates.attackTime -= Time.deltaTime;
-                if (animStates != null && animStates.attackTime <= 0f)
-                {
-                    if (animStates.animator.GetCurrentAnimatorStateInfo(0).IsName("zIdle"))
-                    {
-                        Attack();
-                    }
-                } */
-            }
+            PlayerDetected();
+        }
+        else
+        {
+            ZombieState();
         }
     }
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -66,9 +48,60 @@ public class EnemyActions : MonoBehaviour
         return false;
     }
 
+    void ZombieState()
+    {
+        agent.speed = 1.0f;
+        waitTimer += Time.deltaTime;
+        if (animStates != null)
+        {
+            if (animStates.animator.GetCurrentAnimatorStateInfo(0).IsName("zDead"))
+            {
+                Invoke(nameof(Dead), 2.2f);
+                agent.isStopped = true;
+            }
+            else
+            {
+                Wander();
+            }
+        }
+    }
+
+    void Wander()
+    {
+        if (agent.remainingDistance <= agent.stoppingDistance) //done with path
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.zIdle);
+
+            if (RandomPoint(centrePoint.position, range, out Vector3 point) && waitTimer >= 4f) //pass in our centre point and radius of area
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.zWalk);
+                waitTimer = 0f;
+                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f); //so you can see with gizmos
+                agent.SetDestination(point);
+            }
+        }
+    }
+
+    void PlayerDetected()
+    {
+        if (playerDetect.FindTheTarget() != null)
+        {
+            zombie.transform.LookAt(playerDetect.FindTheTarget().transform);
+            RunToPlayer();
+        }
+    }
+
+    void RunToPlayer()
+    {
+        agent.speed = 2.0f;
+        GetComponent<NavMeshAgent>().SetDestination(playerDetect.player.transform.position);
+        animStates.ChangeAnim(AnimStates.AnimState.zRun);
+
+    }
+
     void Attack()
     {
-
+        animStates.ChangeAnim(AnimStates.AnimState.zAttack);
     }
 
     void EndAttack()

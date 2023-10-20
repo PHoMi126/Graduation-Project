@@ -15,9 +15,10 @@ public class AnimStates : MonoBehaviour
         pistolIdle, pistolShoot, pistolSprint, pistolReload,
         rifleIdle, rifleShoot, rifleSprint, rifleReload,
         revolverIdle, revolverShoot, revolverSprint, revolverReload,
+        dead,
 
         //Enemy
-        zIdle, zAttack, zDead
+        zIdle, zAttack, zWalk, zRun, zDead
     }
 
     void Start()

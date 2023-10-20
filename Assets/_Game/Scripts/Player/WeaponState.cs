@@ -19,31 +19,46 @@ public class WeaponState : MonoBehaviour
     [SerializeField] AudioClip[] clips;
     [SerializeField] float volume = 1f;
 
+    [Header("Ammo UI")]
+    [SerializeField] MonoBehaviour[] weaponsUI;
+
     bool isSprinting;
+    bool canSprint;
     bool isReloading = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+        animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
         AudioSource.PlayClipAtPoint(clips[0], transform.position, volume);
-        weapons[0].SetActive(false);
-        weapons[1].SetActive(true);
-        weapons[2].SetActive(false);
+        weapons[0].SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Attack();
+        if (Input.GetMouseButtonDown(0))
+        {
+            Attack();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            StopAttack();
+        }
+
+        if (canSprint == true)
+        {
+            Sprint();
+        }
+
         Reload();
-        Sprint();
         ChangeWeapon();
     }
 
     private void ChangeWeapon()
     {
-        if (Input.GetKeyDown(meleeSlot))
+        if (Input.GetKeyDown(meleeSlot) && weapons[0] != null)
         {
             animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
             animStates.animator.SetInteger("weaponType", 1);
@@ -60,7 +75,7 @@ public class WeaponState : MonoBehaviour
             animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
         }
 
-        if (Input.GetKeyDown(pistolSlot))
+        if (Input.GetKeyDown(pistolSlot) && weapons[1] != null)
         {
             animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
             animStates.animator.SetInteger("weaponType", 2);
@@ -77,7 +92,7 @@ public class WeaponState : MonoBehaviour
             animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
         }
 
-        if (Input.GetKeyDown(revolverSlot))
+        if (Input.GetKeyDown(revolverSlot) && weapons[2] != null)
         {
             animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
             animStates.animator.SetInteger("weaponType", 4);
@@ -91,9 +106,6 @@ public class WeaponState : MonoBehaviour
                 }, 0.5f));
 
             animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
-
-            //StartCoroutine(IEDelayAction(Attack, 1));
-
         }
     }
 
@@ -105,42 +117,40 @@ public class WeaponState : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetMouseButtonDown(0))
+        canSprint = false;
+        if (weapons[0].activeSelf)
         {
-            if (weapons[0].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.meleeAtk);
-                //AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
-            }
-
-            if (weapons[1].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.pistolShoot);
-                AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
-            }
-
-            if (weapons[2].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.revolverShoot);
-            }
+            animStates.ChangeAnim(AnimStates.AnimState.meleeAtk);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (weapons[1].activeSelf)
         {
-            if (weapons[0].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
-            }
+            animStates.ChangeAnim(AnimStates.AnimState.pistolShoot);
+            AudioSource.PlayClipAtPoint(clips[1], transform.position, volume);
+        }
 
-            if (weapons[1].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
-            }
+        if (weapons[2].activeSelf)
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.revolverShoot);
+        }
+    }
 
-            if (weapons[2].activeSelf)
-            {
-                animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
-            }
+    private void StopAttack()
+    {
+        canSprint = true;
+        if (weapons[0].activeSelf)
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
+        }
+
+        if (weapons[1].activeSelf)
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+        }
+
+        if (weapons[2].activeSelf)
+        {
+            animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
         }
     }
 

@@ -10,8 +10,7 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] KeyCode right = KeyCode.D;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField][Range(0f, 0.5f)] float moveSmoothDamp = 0.25f;
-    float moveSpeed;
-    private bool isSprinting;
+    public float moveSpeed;
 
     [Header("Fall")]
     [SerializeField] float gravity = -12f;
@@ -21,7 +20,7 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] AnimationCurve jumpFallOff;
     [SerializeField] float jumpMultiplier;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
-    private bool isJumping;
+    internal bool isJumping;
 
     [Header("Crouch")]
     [SerializeField] float standHeight;
@@ -29,13 +28,12 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] KeyCode crouchKey = KeyCode.C;
     private bool isCrouching;
 
-    [Header("Player Speed")]
-    [SerializeField] float forwardSpeed = 1f;
-    [SerializeField] float notForwardSpeed = 0.5f;
-    [SerializeField] float sprintSpeed = 4f;
-    [SerializeField] float crouchSpeed = 1f;
+    [Header("Player Speed Based on Stamina")]
+    public StaminaBar stamBar;
+    private bool isSprintable;
 
-    [Header("Weapon bob")]
+
+    [Header("Weapon Bob")]
     [SerializeField] WeaponBob weaponBob;
 
     internal CharacterController player = null;
@@ -46,19 +44,32 @@ public class PlayerAction : MonoBehaviour
     private void Start()
     {
         player = GetComponent<CharacterController>();
-        moveSpeed = forwardSpeed;
+        stamBar = GetComponent<StaminaBar>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        WASD();
-        Jump();
-        Sprint();
+        Actions();
+
+        if (Input.GetKeyDown(jumpKey) && player.isGrounded)
+        {
+            Jump();
+        }
+
+        if (Input.GetKey(sprintKey))
+        {
+            StartSprint();
+        }
+        else
+        {
+            StopSprint();
+        }
+
         Crouch();
     }
 
-    private void WASD()
+    private void Actions()
     {
         Vector2 targetDir = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         targetDir.Normalize(); //avoid change in move speed when moving diagonally
@@ -66,8 +77,7 @@ public class PlayerAction : MonoBehaviour
         //changes a vector to desired goal overtime for smooth transition
         currentDir = Vector2.SmoothDamp(currentDir, targetDir, ref currentDirVelocity, moveSmoothDamp);
 
-        if (player.isGrounded) //check if player touch the ground or not
-            velocityY = 0f;
+        if (player.isGrounded) velocityY = 0f;
         //defind downward acceleration
         velocityY += gravity * Time.deltaTime;
 
@@ -76,11 +86,16 @@ public class PlayerAction : MonoBehaviour
         player.Move(velocity * Time.deltaTime);
     }
 
-    private void Jump()
+    public void Jump() //Combine with Stamina Cost
     {
-        if (Input.GetKeyDown(jumpKey))
+        if (stamBar.currentStam < stamBar.jumpCost)
+            return;
+
+        if (stamBar.currentStam >= (stamBar.maxStam * stamBar.jumpCost / stamBar.maxStam))
         {
             isJumping = true;
+            stamBar.currentStam -= stamBar.jumpCost;
+
             StartCoroutine(JumpEvent());
         }
     }
@@ -100,21 +115,27 @@ public class PlayerAction : MonoBehaviour
         isJumping = false;
     }
 
-    private void Sprint()
+    public void StartSprint()
     {
-        if (Input.GetKeyDown(sprintKey) && !isSprinting)
+        moveSpeed = stamBar.sprintSpeed;
+        if (moveSpeed > stamBar.normalSpeed)
         {
-            isSprinting = true;
-            moveSpeed = sprintSpeed;
-            weaponBob.enabled = false;
+            if (stamBar.currentStam > 0f)
+            {
+                stamBar.isSprinting = true;
+                stamBar.StamSprint();
+            }
+            else
+            {
+                stamBar.isSprinting = false;
+            }
         }
+    }
 
-        if (Input.GetKeyUp(sprintKey) && isSprinting)
-        {
-            isSprinting = false;
-            moveSpeed = forwardSpeed;
-            weaponBob.enabled = true;
-        }
+    public void StopSprint()
+    {
+        stamBar.isSprinting = false;
+        moveSpeed = stamBar.normalSpeed;
     }
 
     private void Crouch()
@@ -123,14 +144,14 @@ public class PlayerAction : MonoBehaviour
         {
             isCrouching = true;
             player.height = crouchHeight;
-            moveSpeed = crouchSpeed;
+            moveSpeed = stamBar.crouchSpeed;
         }
 
         if (Input.GetKeyUp(crouchKey) && isCrouching)
         {
             isCrouching = false;
             player.height = standHeight;
-            moveSpeed = forwardSpeed;
+            moveSpeed = stamBar.normalSpeed;
         }
     }
 }

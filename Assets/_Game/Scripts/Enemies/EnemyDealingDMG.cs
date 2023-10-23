@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class EnemyDealingDMG : MonoBehaviour
 {
-    //[SerializeField] HPBar playerHP;
     [SerializeField] float damage;
     [SerializeField] PlayerAction action;
     [SerializeField] Camera weaponRender;
+    [SerializeField] HPBar playerHP;
     private bool damaging = false;
 
     private void OnTriggerEnter(Collider other)
@@ -15,10 +15,10 @@ public class EnemyDealingDMG : MonoBehaviour
             if (!damaging)
             {
                 //playerHP.currentStam -= heal;
-                other.GetComponent<HPBar>().currentHP -= damage;
+                playerHP.currentHP -= damage;
             }
 
-            if (other.GetComponent<HPBar>().currentHP <= 0)
+            if (playerHP.currentHP <= 0)
             {
                 action.enabled = false;
                 weaponRender.gameObject.SetActive(false);

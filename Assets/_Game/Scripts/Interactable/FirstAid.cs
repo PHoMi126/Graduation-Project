@@ -7,9 +7,17 @@ public class FirstAid : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && playerHP.currentHP < 100)
+        if (other.CompareTag("Player") && playerHP.currentHP < playerHP.maxHP)
         {
             playerHP.currentHP += heal;
+
+            if (playerHP.currentHP > playerHP.maxHP)
+            {
+                playerHP.currentHP = playerHP.maxHP;
+            }
+
+            Destroy(gameObject);
+
         }
     }
 }

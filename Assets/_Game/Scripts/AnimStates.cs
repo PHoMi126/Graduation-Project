@@ -5,13 +5,13 @@ public class AnimStates : MonoBehaviour
     [SerializeField] internal Animator animator;
 
     private AnimState currentAnimState;
-    bool isDead;
+    internal bool isDead;
 
     public enum AnimState
     {
         //Player
         switchWeapon,
-        meleeIdle, meleeAtk, meleeSprint,
+        meleeIdle, meleeAttack, meleeSprint,
         pistolIdle, pistolShoot, pistolSprint, pistolReload,
         rifleIdle, rifleShoot, rifleSprint, rifleReload,
         revolverIdle, revolverShoot, revolverSprint, revolverReload,

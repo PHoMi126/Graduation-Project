@@ -122,12 +122,7 @@ public class PlayerAction : MonoBehaviour
         {
             if (stamBar.currentStam > 0f)
             {
-                stamBar.isSprinting = true;
                 stamBar.StamSprint();
-            }
-            else
-            {
-                stamBar.isSprinting = false;
             }
         }
     }

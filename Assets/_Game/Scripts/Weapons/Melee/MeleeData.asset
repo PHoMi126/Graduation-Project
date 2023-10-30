@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a702e5c8cdde52489bd9b2e44511da0, type: 3}
-  m_Name: Pistol
+  m_Script: {fileID: 11500000, guid: 3b6f5e9da026786439137a4cb4ed4f6b, type: 3}
+  m_Name: MeleeData
   m_EditorClassIdentifier: 
-  ammoInClip: 12
-  ammoReserve: 120
-  ammoMaxCarry: 144
+  name: Knife
   damage: 20
+  fireRate: 200
+  maxDistance: 100

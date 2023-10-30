@@ -7,6 +7,7 @@ TagManager:
   - Ladder
   - WeaponPickUp
   - Zombie
+  - PlayerDetection
   layers:
   - Default
   - TransparentFX

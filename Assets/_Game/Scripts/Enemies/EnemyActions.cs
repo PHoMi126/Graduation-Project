@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyActions : MonoBehaviour
+public class EnemyActions : MonoBehaviour, IDamagable
 {
     [Header("NavMesh")]
     [SerializeField] NavMeshAgent agent;
@@ -16,7 +16,9 @@ public class EnemyActions : MonoBehaviour
     [SerializeField] GameObject zombie;
     [SerializeField] PlayerDetection playerDetect;
 
-    bool isDead;
+    [Header("Enemy Stats")]
+    private float enemyHP = 100f;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -56,7 +58,7 @@ public class EnemyActions : MonoBehaviour
         {
             if (animStates.animator.GetCurrentAnimatorStateInfo(0).IsName("zDead"))
             {
-                Invoke(nameof(Dead), 2.2f);
+                TakeDamage(enemyHP);
                 agent.isStopped = true;
             }
             else
@@ -109,11 +111,23 @@ public class EnemyActions : MonoBehaviour
 
     }
 
-    void Dead()
+    void Dying()
     {
         animStates.ChangeAnim(AnimStates.AnimState.zDead);
-        isDead = true;
-        gameObject.SetActive(false);
-        //Destroy(gameObject);
+        animStates.isDead = true;
+        //gameObject.SetActive(false);
+        Invoke(nameof(RemoveCorpse), 3f);
+    }
+
+    void RemoveCorpse()
+    {
+        Destroy(gameObject);
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        enemyHP -= dmg;
+        if (enemyHP <= 0)
+            Dying();
     }
 }

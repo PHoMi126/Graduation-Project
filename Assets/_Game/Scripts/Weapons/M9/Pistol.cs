@@ -15,6 +15,7 @@ public class Pistol : MonoBehaviour
     [SerializeField] Transform cam;
 
     [Header("Ammo UI")]
+    public Transform ammoCount;
     public TextMeshProUGUI currentAmmoInClip;
     public TextMeshProUGUI ammoReserve;
 
@@ -29,7 +30,7 @@ public class Pistol : MonoBehaviour
         animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
 
         //Subcribe to events
-        WeaponActions.shootInput += M9Shoot;
+        WeaponActions.AttackInput += M9Shoot;
         WeaponActions.reloadInput += StartReloadPistol;
     }
 
@@ -39,6 +40,7 @@ public class Pistol : MonoBehaviour
         Debug.DrawRay(cam.position, cam.forward);
         AmmoUI();
         PistolSprint();
+        ammoCount.gameObject.SetActive(true);
     }
 
     private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);

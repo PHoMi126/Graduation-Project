@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class WeaponSwitching : MonoBehaviour
 {
+    [Header("Weapon Switch")]
     [SerializeField] Transform[] weapons;
     [SerializeField] KeyCode[] weaponSwitchKeys;
     [SerializeField] float switchTimer;
+
+    [Header("Switch Animation")]
+    [SerializeField] AnimStates animStates;
 
     int selectedWeapon;
     float timeSinceLastSwitch;
@@ -66,6 +70,6 @@ public class WeaponSwitching : MonoBehaviour
 
     private void OnWeaponSelected()
     {
-        Debug.Log("Changed...");
+        animStates.ChangeAnim(AnimStates.AnimState.switchWeapon);
     }
 }

@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponActions : MonoBehaviour
 {
-    public static Action shootInput;
+    public static Action AttackInput;
     public static Action reloadInput;
 
     [SerializeField] KeyCode reload;
@@ -14,7 +12,7 @@ public class WeaponActions : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            shootInput?.Invoke();
+            AttackInput?.Invoke();
         }
 
         if (Input.GetKeyDown(reload))

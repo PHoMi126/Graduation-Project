@@ -15,6 +15,7 @@ public class Revolver : MonoBehaviour
     [SerializeField] Transform cam;
 
     [Header("Ammo UI")]
+    public Transform ammoCount;
     public TextMeshProUGUI currentAmmoInClip;
     public TextMeshProUGUI ammoReserve;
 
@@ -29,7 +30,7 @@ public class Revolver : MonoBehaviour
         animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
 
         //Subcribe to events
-        WeaponActions.shootInput += M44Shoot;
+        WeaponActions.AttackInput += M44Shoot;
         WeaponActions.reloadInput += StartReloadRevolver;
     }
 
@@ -39,6 +40,7 @@ public class Revolver : MonoBehaviour
         Debug.DrawRay(cam.position, cam.forward);
         AmmoUI();
         RevolverSprint();
+        ammoCount.gameObject.SetActive(true);
     }
 
     private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);

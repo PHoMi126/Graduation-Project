@@ -2316,24 +2316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e1e9421f937e145a47631e2ac01e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animStates: {fileID: 2095799461}
-  reload: 114
-  sprint: 304
-  weapons:
-  - {fileID: 1178256627}
-  - {fileID: 1857328936}
-  - {fileID: 1390133853}
-  meleeSlot: 49
-  pistolSlot: 50
-  revolverSlot: 51
-  clips:
-  - {fileID: 8300000, guid: c95a4c06824c5eb40add0dc0343ddbf3, type: 3}
-  - {fileID: 8300000, guid: 90574e07736600c498f4e1327be7e336, type: 3}
-  - {fileID: 8300000, guid: b2934de584b55254593cbff531ca19f9, type: 3}
-  volume: 1
-  weaponsUI:
-  - {fileID: 1857328937}
-  - {fileID: 1390133856}
 --- !u!114 &277394934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3156,7 +3138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1602908004409945597, guid: 6c42c2280bd025941b864fdca926f339, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1945490750920240845, guid: 6c42c2280bd025941b864fdca926f339, type: 3}
       propertyPath: m_Layer
@@ -3217,7 +3199,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1602908004409945597, guid: 6c42c2280bd025941b864fdca926f339, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1178256629}
   m_SourcePrefab: {fileID: 100100000, guid: 6c42c2280bd025941b864fdca926f339, type: 3}
 --- !u!4 &353850128 stripped
 Transform:
@@ -11897,6 +11882,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2122740216732874567, guid: 6c42c2280bd025941b864fdca926f339, type: 3}
   m_PrefabInstance: {fileID: 353117543}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1178256629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178256627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b3503fc1a1abe4e81e749f1059e851, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animStates: {fileID: 2095799461}
+  sprintFunc: {fileID: 277394935}
+  meleeData: {fileID: 11400000, guid: 2c66d54d72348104f98a871eb2e98c43, type: 2}
+  cam: {fileID: 963194228}
+  ammoCount: {fileID: 2108365156}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &1178589456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15120,6 +15125,7 @@ MonoBehaviour:
   sprintFunc: {fileID: 277394935}
   gunData: {fileID: 11400000, guid: 24f465c45023fbe4aa663a03819c3eb5, type: 2}
   cam: {fileID: 963194228}
+  ammoCount: {fileID: 2108365156}
   currentAmmoInClip: {fileID: 1799066257}
   ammoReserve: {fileID: 1813743681}
   layerMask:
@@ -17529,7 +17535,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1573140411}
-  isDead: 0
 --- !u!95 &1573140411 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
@@ -20815,6 +20820,7 @@ MonoBehaviour:
   sprintFunc: {fileID: 277394935}
   gunData: {fileID: 11400000, guid: 0660f230b775b644f94855f9abf73f73, type: 2}
   cam: {fileID: 963194228}
+  ammoCount: {fileID: 2108365156}
   currentAmmoInClip: {fileID: 1799066257}
   ammoReserve: {fileID: 1813743681}
   layerMask:
@@ -22726,7 +22732,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2095799460}
-  isDead: 0
 --- !u!114 &2095799462
 MonoBehaviour:
   m_ObjectHideFlags: 0

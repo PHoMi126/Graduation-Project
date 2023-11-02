@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: M9
   m_EditorClassIdentifier: 
   name: Starting Pistol
-  currentAmmoInClip: 15
+  currentAmmoInClip: 4
   magSize: 15
   ammoReserve: 0
   damage: 20
   fireRate: 300
-  reloadTime: 1.5
+  reloadTime: 2.75
   maxDistance: 500

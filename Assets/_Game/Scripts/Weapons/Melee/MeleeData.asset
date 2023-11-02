@@ -15,4 +15,4 @@ MonoBehaviour:
   name: Knife
   damage: 20
   fireRate: 200
-  maxDistance: 100
+  maxDistance: 1

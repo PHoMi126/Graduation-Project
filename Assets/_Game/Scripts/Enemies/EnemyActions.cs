@@ -32,8 +32,10 @@ public class EnemyActions : MonoBehaviour, IDamagable
         }
         else
         {
-            ZombieState();
+            Wander();
         }
+
+        ZombieState();
     }
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
@@ -56,14 +58,9 @@ public class EnemyActions : MonoBehaviour, IDamagable
         waitTimer += Time.deltaTime;
         if (animStates != null)
         {
-            if (animStates.animator.GetCurrentAnimatorStateInfo(0).IsName("zDead"))
+            if (animStates.isDead)
             {
                 TakeDamage(enemyHP);
-                agent.isStopped = true;
-            }
-            else
-            {
-                Wander();
             }
         }
     }
@@ -115,6 +112,7 @@ public class EnemyActions : MonoBehaviour, IDamagable
     {
         animStates.ChangeAnim(AnimStates.AnimState.zDead);
         animStates.isDead = true;
+        agent.isStopped = true;
         //gameObject.SetActive(false);
         Invoke(nameof(RemoveCorpse), 3f);
     }

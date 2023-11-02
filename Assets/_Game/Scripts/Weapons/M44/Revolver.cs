@@ -81,7 +81,7 @@ public class Revolver : MonoBehaviour
 
     public void StartReloadRevolver()
     {
-        if (!gunData.reloading && this.gameObject.activeSelf)
+        if (!gunData.reloading && gameObject.activeSelf)
         {
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.revolverReload);
@@ -101,13 +101,16 @@ public class Revolver : MonoBehaviour
 
     private void RevolverSprint()
     {
-        if (sprintFunc.isSprinting == true)
+        if (gameObject.activeSelf && !gunData.reloading)
         {
-            animStates.ChangeAnim(AnimStates.AnimState.revolverSprint);
-        }
-        else
-        {
-            animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
+            if (sprintFunc.isSprinting == true)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverSprint);
+            }
+            else
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
+            }
         }
     }
 }

@@ -81,7 +81,7 @@ public class Pistol : MonoBehaviour
 
     public void StartReloadPistol()
     {
-        if (!gunData.reloading && this.gameObject.activeSelf /* Stop reload if inactive*/)
+        if (!gunData.reloading && gameObject.activeSelf /* Stop reload if inactive*/)
         {
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.pistolReload);
@@ -101,13 +101,16 @@ public class Pistol : MonoBehaviour
 
     private void PistolSprint()
     {
-        if (sprintFunc.isSprinting == true)
+        if (gameObject.activeSelf && !gunData.reloading)
         {
-            animStates.ChangeAnim(AnimStates.AnimState.pistolSprint);
-        }
-        else
-        {
-            animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+            if (sprintFunc.isSprinting == true)
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.pistolSprint);
+            }
+            else
+            {
+                animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+            }
         }
     }
 }

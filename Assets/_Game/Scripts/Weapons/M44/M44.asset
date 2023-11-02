@@ -18,5 +18,5 @@ MonoBehaviour:
   ammoReserve: 0
   damage: 50
   fireRate: 200
-  reloadTime: 3
+  reloadTime: 6
   maxDistance: 2000

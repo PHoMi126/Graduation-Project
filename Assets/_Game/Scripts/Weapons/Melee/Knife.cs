@@ -38,7 +38,7 @@ public class Knife : MonoBehaviour
 
     public void KnifeAttack()
     {
-        if (this.gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
             if (CanSwing())
             {

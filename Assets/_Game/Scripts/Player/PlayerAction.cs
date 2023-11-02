@@ -30,7 +30,6 @@ public class PlayerAction : MonoBehaviour
 
     [Header("Player Speed Based on Stamina")]
     public StaminaBar stamBar;
-    private bool isSprintable;
 
 
     [Header("Weapon Bob")]

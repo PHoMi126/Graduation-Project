@@ -8,7 +8,6 @@ public class LadderMovement : MonoBehaviour
     [SerializeField] KeyCode up;
     [SerializeField] KeyCode down;
 
-    PlayerAction player;
     bool stickToLadder;
 
     private void Start()
@@ -24,7 +23,7 @@ public class LadderMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ladder"))
+        if (other.gameObject.CompareTag("Player"))
         {
             moveInput.enabled = false;
             stickToLadder = true;
@@ -33,7 +32,7 @@ public class LadderMovement : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Ladder"))
+        if (other.gameObject.CompareTag("Player"))
         {
             moveInput.enabled = true;
             stickToLadder = false;

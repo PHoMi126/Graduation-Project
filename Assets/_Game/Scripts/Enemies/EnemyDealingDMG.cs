@@ -14,7 +14,6 @@ public class EnemyDealingDMG : MonoBehaviour
         {
             if (!damaging)
             {
-                //playerHP.currentStam -= heal;
                 playerHP.currentHP -= damage;
             }
 

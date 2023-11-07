@@ -4,24 +4,32 @@ using UnityEngine.AI;
 public class EnemyActions : MonoBehaviour, IDamagable
 {
     [Header("NavMesh")]
-    [SerializeField] NavMeshAgent agent;
+    public NavMeshAgent agent;
     [SerializeField] float range; //radius of sphere
     [SerializeField] Transform centrePoint; //centre of the area the agent wants to move around in
                                             //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
     [Header("Animations")]
-    [SerializeField] AnimStates animStates;
+    public AnimStates animStates;
     [SerializeField] float waitTimer = 0f;
 
     [Header("GameObjects")]
     [SerializeField] GameObject zombie;
     [SerializeField] PlayerDetection playerDetect;
+    [SerializeField] GameObject attackArea;
 
     [Header("Enemy Stats")]
+    [SerializeField] Transform player;
+    public float attackRange;
+    public float attackTimer;
     private float enemyHP = 100f;
+
+    private bool isAttacking = false;
+    private bool isOwnDead = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        DeActiveAttack();
     }
 
     void Update()
@@ -36,6 +44,8 @@ public class EnemyActions : MonoBehaviour, IDamagable
         }
 
         ZombieState();
+
+        PlayerInAttackRange();
     }
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
@@ -61,6 +71,7 @@ public class EnemyActions : MonoBehaviour, IDamagable
             if (animStates.isDead)
             {
                 TakeDamage(enemyHP);
+                agent.SetDestination(agent.transform.position);
             }
         }
     }
@@ -69,10 +80,12 @@ public class EnemyActions : MonoBehaviour, IDamagable
     {
         if (agent.remainingDistance <= agent.stoppingDistance) //done with path
         {
+            //animStates.ResetAnim();
             animStates.ChangeAnim(AnimStates.AnimState.zIdle);
 
             if (RandomPoint(centrePoint.position, range, out Vector3 point) && waitTimer >= 4f) //pass in our centre point and radius of area
             {
+                //animStates.ResetAnim();
                 animStates.ChangeAnim(AnimStates.AnimState.zWalk);
                 waitTimer = 0f;
                 Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f); //so you can see with gizmos
@@ -93,28 +106,73 @@ public class EnemyActions : MonoBehaviour, IDamagable
     void RunToPlayer()
     {
         agent.speed = 2.0f;
-        GetComponent<NavMeshAgent>().SetDestination(playerDetect.player.transform.position);
+        agent.SetDestination(playerDetect.player.transform.position);
+        //animStates.ResetAnim();
         animStates.ChangeAnim(AnimStates.AnimState.zRun);
+    }
+
+    void PlayerInAttackRange()
+    {
+        if (player != null)
+        {
+            if (Vector3.Distance(player.position, transform.position) <= attackRange)
+            {
+                if (isOwnDead == true)
+                    return;
+
+                attackTimer += Time.deltaTime;
+
+                if (attackTimer > 0.5f)
+                {
+                    ActiveAttack();
+                }
+
+                if (attackTimer > 0.75f)
+                {
+                    DeActiveAttack();
+                    attackTimer = 0f;
+                }
+            }
+            else if (isOwnDead == false)
+            {
+                PlayerDetected();
+                agent.isStopped = false;
+            }
+        }
 
     }
 
-    void Attack()
+    private void ActiveAttack()
     {
-        animStates.ChangeAnim(AnimStates.AnimState.zAttack);
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            animStates.ResetAnim();
+            animStates.ChangeAnim(AnimStates.AnimState.zAttack);
+            attackArea.SetActive(true);
+            agent.isStopped = true;
+            Debug.Log("Att");
+        }
     }
 
-    void EndAttack()
+    private void DeActiveAttack()
     {
-
+        isAttacking = false;
+        attackArea.SetActive(false);
+        agent.isStopped = false;
     }
 
     void Dying()
     {
-        animStates.ChangeAnim(AnimStates.AnimState.zDead);
-        animStates.isDead = true;
-        agent.isStopped = true;
-        //gameObject.SetActive(false);
-        Invoke(nameof(RemoveCorpse), 3f);
+        if (!isOwnDead)
+        {
+            isOwnDead = true;
+            //animStates.ResetAnim();
+            animStates.ChangeAnim(AnimStates.AnimState.zDead);
+            animStates.isDead = true;
+            attackArea.SetActive(false);
+            Invoke(nameof(RemoveCorpse), 3f);
+        }
     }
 
     void RemoveCorpse()
@@ -124,8 +182,12 @@ public class EnemyActions : MonoBehaviour, IDamagable
 
     public void TakeDamage(float dmg)
     {
-        enemyHP -= dmg;
-        if (enemyHP <= 0)
-            Dying();
+        if (enemyHP > 0f)
+        {
+            enemyHP -= dmg;
+            if (enemyHP <= 0f)
+                Dying();
+        }
+
     }
 }

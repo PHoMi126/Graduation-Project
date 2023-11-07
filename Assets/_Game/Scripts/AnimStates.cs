@@ -26,6 +26,8 @@ public class AnimStates : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public bool isTesr = false;
+
     public void ChangeAnim(AnimState _state)
     {
         if (isDead == true)
@@ -35,6 +37,22 @@ public class AnimStates : MonoBehaviour
             //animator.ResetTrigger(currentAnimState.ToString());
             currentAnimState = _state;
             animator.SetTrigger(currentAnimState.ToString());
+
+            if (isTesr == true)
+            {
+                Debug.Log(_state);
+            }
         }
+
+
+    }
+
+    public void ResetAnim()
+    {
+        if (isTesr == true)
+        {
+            Debug.LogError(currentAnimState);
+        }
+        animator.ResetTrigger(currentAnimState.ToString());
     }
 }

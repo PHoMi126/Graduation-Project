@@ -28,6 +28,7 @@ public class Pistol : MonoBehaviour
     {
         AmmoUI();
         animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
+        gunData.currentAmmoInClip = gunData.magSize;
 
         //Subcribe to events
         WeaponActions.AttackInput += M9Shoot;

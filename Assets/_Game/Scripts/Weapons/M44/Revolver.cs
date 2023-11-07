@@ -28,6 +28,7 @@ public class Revolver : MonoBehaviour
     {
         AmmoUI();
         animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
+        gunData.currentAmmoInClip = gunData.magSize;
 
         //Subcribe to events
         WeaponActions.AttackInput += M44Shoot;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M9
   m_EditorClassIdentifier: 
   name: Starting Pistol
-  currentAmmoInClip: 4
+  currentAmmoInClip: 14
   magSize: 15
   ammoReserve: 0
   damage: 20

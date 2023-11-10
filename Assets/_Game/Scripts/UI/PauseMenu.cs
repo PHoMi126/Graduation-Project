@@ -6,31 +6,33 @@ public class PauseMenu : MonoBehaviour
     public KeyCode pauseKey;
     public Transform playerUI;
     public Transform pauseUI;
+    public PlayerPOV playerPOV;
 
     private bool pausing;
 
     private void Update()
     {
         PauseKey();
-        UnPauseKey();
+
+        if (playerPOV.lockCursor == false)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void PauseKey()
     {
-        if (Input.GetKeyDown(pauseKey))
+        if (Input.GetKeyDown(pauseKey) && pausing == false)
         {
-            pausing = !pausing;
+            pausing = true;
             playerUI.gameObject.SetActive(false);
             pauseUI.gameObject.SetActive(true);
             Time.timeScale = 0f;
         }
-    }
-
-    public void UnPauseKey()
-    {
-        if (Input.GetKeyDown(pauseKey))
+        else if (Input.GetKeyDown(pauseKey) && pausing == true)
         {
-            pausing = !pausing;
+            pausing = false;
             playerUI.gameObject.SetActive(true);
             pauseUI.gameObject.SetActive(false);
             Time.timeScale = 1f;
@@ -39,7 +41,7 @@ public class PauseMenu : MonoBehaviour
 
     public void UnPauseButton()
     {
-        pausing = !pausing;
+        pausing = false;
         playerUI.gameObject.SetActive(true);
         pauseUI.gameObject.SetActive(false);
         Time.timeScale = 1f;

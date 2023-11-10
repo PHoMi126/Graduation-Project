@@ -4228,6 +4228,7 @@ MonoBehaviour:
   pauseKey: 27
   playerUI: {fileID: 784513962}
   pauseUI: {fileID: 823506012}
+  playerPOV: {fileID: 277394930}
 --- !u!1001 &454270256
 PrefabInstance:
   m_ObjectHideFlags: 0

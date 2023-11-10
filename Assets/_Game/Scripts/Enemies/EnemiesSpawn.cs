@@ -25,6 +25,7 @@ public class EnemiesSpawn : MonoBehaviour
     {
         while (enemyCount <= Random.Range(minSpawn, maxSpawn))
         {
+            enemy.SetActive(true);
             xPos = Random.Range(x1, x2); //-24, 15
             zPos = Random.Range(z1, z2);  //35, 75
             Instantiate(enemy, new Vector3(xPos, 0.05f, zPos), Quaternion.identity);

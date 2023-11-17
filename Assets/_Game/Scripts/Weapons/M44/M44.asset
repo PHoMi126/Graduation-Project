@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: M44
   m_EditorClassIdentifier: 
   name: High Damage Revolver
-  currentAmmoInClip: 6
+  currentAmmoInClip: 0
   magSize: 6
   ammoReserve: 0
+  capacity: 36
   damage: 50
   fireRate: 200
   reloadTime: 6

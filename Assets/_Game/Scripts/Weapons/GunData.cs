@@ -7,9 +7,10 @@ public class GunData : ScriptableObject
     public new string name;
 
     [Header("Ammo Relate")]
-    public float currentAmmoInClip;
-    public float magSize;
-    public float ammoReserve;
+    public int currentAmmoInClip;
+    public int magSize;
+    public int ammoReserve;
+    public int capacity;
 
     [Header("Functions")]
     public float damage;

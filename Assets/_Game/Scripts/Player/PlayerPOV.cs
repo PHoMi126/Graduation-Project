@@ -8,7 +8,7 @@ public class PlayerPOV : MonoBehaviour
     [SerializeField][Range(0f, 0.5f)] float mouseSmoothDamp = 0.025f;
 
     float cameraPitch = 0.0f; //keep track camera x rotation
-    internal bool lockCursor = true; //hide cursor from screen
+    internal bool lockCursor = false; //hide cursor from screen
 
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
@@ -25,7 +25,7 @@ public class PlayerPOV : MonoBehaviour
 
     private void MouseLock()
     {
-        if (lockCursor)
+        if (!lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

@@ -6,7 +6,7 @@ public class GameOver : MonoBehaviour
     public Transform gameOver;
     public AnimStates state;
 
-    private void Start()
+    private void Update()
     {
         PlayerDead();
     }

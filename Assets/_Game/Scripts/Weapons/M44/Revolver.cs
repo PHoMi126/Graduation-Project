@@ -1,34 +1,13 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 
-public class Revolver : MonoBehaviour
+public class Revolver : GunFunctionsFather
 {
-    [Header("Animation")]
-    [SerializeField] AnimStates animStates;
-    [SerializeField] StaminaBar sprintFunc;
-
-    [Header("S.Object")]
-    [SerializeField] GunData gunData;
-
-    [Header("RayCast Spawn")]
-    [SerializeField] Transform cam;
-
-    [Header("Ammo UI")]
-    public Transform ammoCount;
-    public TextMeshProUGUI currentAmmoInClip;
-    public TextMeshProUGUI ammoReserve;
-
-    float timeSinceLastShot;
-
-    public LayerMask layerMask;
-    RaycastHit hit;
-
     private void Start()
     {
         AmmoUI();
         animStates.ChangeAnim(AnimStates.AnimState.revolverIdle);
         gunData.currentAmmoInClip = gunData.magSize;
+        gunData.ammoReserve = gunData.capacity - gunData.magSize;
 
         //Subcribe to events
         WeaponActions.AttackInput += M44Shoot;
@@ -44,12 +23,9 @@ public class Revolver : MonoBehaviour
         ammoCount.gameObject.SetActive(true);
     }
 
-    private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
-
-    public void AmmoUI()
+    private void OnDestroy()
     {
-        currentAmmoInClip.text = gunData.currentAmmoInClip.ToString();
-        ammoReserve.text = gunData.ammoReserve.ToString();
+        WeaponActions.AttackInput -= M44Shoot;
     }
 
     public void M44Shoot()
@@ -65,8 +41,8 @@ public class Revolver : MonoBehaviour
                     IDamagable damagable = hit.transform.GetComponent<IDamagable>();
                     damagable?.TakeDamage(gunData.damage);
                 }
-
                 gunData.currentAmmoInClip--;
+
                 timeSinceLastShot = 0f;
                 OnGunShot();
             }
@@ -75,10 +51,8 @@ public class Revolver : MonoBehaviour
 
     private void OnGunShot()
     {
-
+        muzzleFlash.Play();
     }
-
-    private void OnDisable() => gunData.reloading = false;
 
     public void StartReloadRevolver()
     {
@@ -87,17 +61,6 @@ public class Revolver : MonoBehaviour
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.revolverReload);
         }
-    }
-
-    private IEnumerator Reload()
-    {
-        gunData.reloading = true;
-
-        yield return new WaitForSeconds(gunData.reloadTime);
-
-        gunData.currentAmmoInClip = gunData.magSize;
-
-        gunData.reloading = false;
     }
 
     private void RevolverSprint()

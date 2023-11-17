@@ -1,38 +1,22 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 
-public class Pistol : MonoBehaviour
+public class Pistol : GunFunctionsFather
 {
-    [Header("Animation")]
-    [SerializeField] AnimStates animStates;
-    [SerializeField] StaminaBar sprintFunc;
-
-    [Header("S.Object")]
-    [SerializeField] GunData gunData;
-
-    [Header("RayCast Spawn")]
-    [SerializeField] Transform cam;
-
-    [Header("Ammo UI")]
-    public Transform ammoCount;
-    public TextMeshProUGUI currentAmmoInClip;
-    public TextMeshProUGUI ammoReserve;
-
-    float timeSinceLastShot;
-
-    public LayerMask layerMask;
-    RaycastHit hit;
-
     private void Start()
     {
         AmmoUI();
         animStates.ChangeAnim(AnimStates.AnimState.pistolIdle);
         gunData.currentAmmoInClip = gunData.magSize;
+        gunData.ammoReserve = gunData.capacity - gunData.magSize;
 
         //Subcribe to events
         WeaponActions.AttackInput += M9Shoot;
         WeaponActions.reloadInput += StartReloadPistol;
+    }
+
+    private void OnDestroy()
+    {
+        WeaponActions.AttackInput -= M9Shoot;
     }
 
     private void Update()
@@ -42,14 +26,6 @@ public class Pistol : MonoBehaviour
         AmmoUI();
         PistolSprint();
         ammoCount.gameObject.SetActive(true);
-    }
-
-    private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
-
-    public void AmmoUI()
-    {
-        currentAmmoInClip.text = gunData.currentAmmoInClip.ToString();
-        ammoReserve.text = gunData.ammoReserve.ToString();
     }
 
     public void M9Shoot()
@@ -75,10 +51,8 @@ public class Pistol : MonoBehaviour
 
     private void OnGunShot()
     {
-
+        muzzleFlash.Play();
     }
-
-    private void OnDisable() => gunData.reloading = false;
 
     public void StartReloadPistol()
     {
@@ -87,17 +61,6 @@ public class Pistol : MonoBehaviour
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.pistolReload);
         }
-    }
-
-    private IEnumerator Reload()
-    {
-        gunData.reloading = true;
-
-        yield return new WaitForSeconds(gunData.reloadTime);
-
-        gunData.currentAmmoInClip = gunData.magSize;
-
-        gunData.reloading = false;
     }
 
     private void PistolSprint()

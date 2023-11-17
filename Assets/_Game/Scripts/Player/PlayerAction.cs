@@ -31,6 +31,10 @@ public class PlayerAction : MonoBehaviour
     [Header("Player Speed Based on Stamina")]
     public StaminaBar stamBar;
 
+    [Header("Flashlight")]
+    public Light flashlight;
+    [SerializeField] KeyCode lightKey = KeyCode.F;
+    bool lightToggle;
 
     [Header("Weapon Bob")]
     [SerializeField] WeaponBob weaponBob;
@@ -44,6 +48,7 @@ public class PlayerAction : MonoBehaviour
     {
         player = GetComponent<CharacterController>();
         stamBar = GetComponent<StaminaBar>();
+        flashlight.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -64,6 +69,8 @@ public class PlayerAction : MonoBehaviour
         {
             StopSprint();
         }
+
+        Flashlight();
 
         Crouch();
     }
@@ -146,6 +153,23 @@ public class PlayerAction : MonoBehaviour
             isCrouching = false;
             player.height = standHeight;
             moveSpeed = stamBar.normalSpeed;
+        }
+    }
+
+    private void Flashlight()
+    {
+        if (Input.GetKeyDown(lightKey))
+        {
+            lightToggle = !lightToggle;
+        }
+
+        if (lightToggle)
+        {
+            flashlight.gameObject.SetActive(true);
+        }
+        else
+        {
+            flashlight.gameObject.SetActive(false);
         }
     }
 }

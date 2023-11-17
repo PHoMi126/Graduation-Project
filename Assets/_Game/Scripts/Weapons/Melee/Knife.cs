@@ -57,4 +57,10 @@ public class Knife : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        WeaponActions.AttackInput -= KnifeAttack;
+
+    }
 }

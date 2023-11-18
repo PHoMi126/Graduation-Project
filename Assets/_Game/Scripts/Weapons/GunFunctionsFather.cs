@@ -43,7 +43,7 @@ public class GunFunctionsFather : MonoBehaviour
         if (gunData.currentAmmoInClip > gunData.magSize)
             yield break;
 
-        if (gunData.ammoReserve > 0)
+        if (gunData.ammoReserve > 0 && gunData.currentAmmoInClip < gunData.magSize)
         {
             gunData.reloading = true;
 

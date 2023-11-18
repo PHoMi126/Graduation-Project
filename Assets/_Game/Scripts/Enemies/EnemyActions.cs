@@ -151,7 +151,6 @@ public class EnemyActions : MonoBehaviour, IDamagable
             animStates.ChangeAnim(AnimStates.AnimState.zAttack);
             attackArea.SetActive(true);
             agent.isStopped = true;
-            Debug.Log("Att");
         }
     }
 

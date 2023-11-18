@@ -37,11 +37,6 @@ public class AnimStates : MonoBehaviour
             //animator.ResetTrigger(currentAnimState.ToString());
             currentAnimState = _state;
             animator.SetTrigger(currentAnimState.ToString());
-
-            if (isTesr == true)
-            {
-                Debug.Log(_state);
-            }
         }
 
 
@@ -49,10 +44,6 @@ public class AnimStates : MonoBehaviour
 
     public void ResetAnim()
     {
-        if (isTesr == true)
-        {
-            Debug.LogError(currentAnimState);
-        }
         animator.ResetTrigger(currentAnimState.ToString());
     }
 }

@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class EnemyDealingDMG : MonoBehaviour
 {
-    [SerializeField] float damage;
     [SerializeField] PlayerAction action;
     [SerializeField] Camera weaponRender;
     [SerializeField] HPBar playerHP;
     private bool damaging = false;
+    private float damage;
+
+    private void Update()
+    {
+        damage = Random.Range(2, 5);
+    }
 
     private void OnTriggerEnter(Collider other)
     {

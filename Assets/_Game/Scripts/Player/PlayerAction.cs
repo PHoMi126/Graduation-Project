@@ -10,7 +10,7 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] KeyCode right = KeyCode.D;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField][Range(0f, 0.5f)] float moveSmoothDamp = 0.25f;
-    public float moveSpeed;
+    internal float moveSpeed;
 
     [Header("Fall")]
     [SerializeField] float gravity = -12f;
@@ -49,6 +49,7 @@ public class PlayerAction : MonoBehaviour
         player = GetComponent<CharacterController>();
         stamBar = GetComponent<StaminaBar>();
         flashlight.gameObject.SetActive(false);
+        moveSpeed = stamBar.normalSpeed;
     }
 
     // Update is called once per frame
@@ -101,6 +102,7 @@ public class PlayerAction : MonoBehaviour
         {
             isJumping = true;
             stamBar.currentStam -= stamBar.jumpCost;
+            stamBar.sprintSpeed -= stamBar.speedChangeOnJump;
 
             StartCoroutine(JumpEvent());
         }

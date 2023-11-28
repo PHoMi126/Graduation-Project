@@ -3122,7 +3122,6 @@ MonoBehaviour:
   right: 100
   sprintKey: 304
   moveSmoothDamp: 0.25
-  moveSpeed: 0
   gravity: -12
   jumpFallOff:
     serializedVersion: 2
@@ -3206,8 +3205,7 @@ MonoBehaviour:
   sprintCost: 10
   stamRegen: 5
   normalSpeed: 2
-  stamDepleatedSpeed: 1
-  sprintSpeed: 3.5
+  sprintSpeed: 4
   crouchSpeed: 1.25
 --- !u!114 &277394936
 MonoBehaviour:
@@ -14912,7 +14910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0
@@ -37766,7 +37764,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.07666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: b03c82e4aeaccbf46818217691ce2e0e, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &1848514089
 PrefabInstance:
@@ -40128,7 +40126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40ba153cb69ce6342a655fba575b7cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
   action: {fileID: 277394929}
   weaponRender: {fileID: 1046161415}
   playerHP: {fileID: 277394934}

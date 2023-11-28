@@ -21,9 +21,11 @@ public class StaminaBar : MonoBehaviour
 
     [Header("Stamina Affect Speed")]
     public float normalSpeed = 2f;
-    public float stamDepleatedSpeed = 1.0f;
-    public float sprintSpeed = 3.5f;
+    public float sprintSpeed = 4f;
     public float crouchSpeed = 1.25f;
+    internal float speedChangeOnRun = 0.2f;
+    internal float speedChangeOnRest = 0.1f;
+    internal float speedChangeOnJump = 0.2f;
 
     private PlayerAction action;
 
@@ -43,6 +45,12 @@ public class StaminaBar : MonoBehaviour
             if (currentStam <= maxStam - 0.01)
             {
                 currentStam += stamRegen * Time.deltaTime;
+                sprintSpeed += speedChangeOnRest * Time.deltaTime;
+
+                if (sprintSpeed > 4f)
+                {
+                    sprintSpeed = 4f;
+                }
 
                 if (currentStam >= 0.2)
                 {
@@ -59,10 +67,15 @@ public class StaminaBar : MonoBehaviour
         {
             isSprinting = true;
             currentStam -= sprintCost * Time.deltaTime;
+            sprintSpeed -= speedChangeOnRun * Time.deltaTime;
+
+            if (sprintSpeed < normalSpeed)
+            {
+                sprintSpeed = normalSpeed;
+            }
 
             if (currentStam <= 0.1)
             {
-                action.moveSpeed = stamDepleatedSpeed;
                 hasRegenerated = false;
             }
         }

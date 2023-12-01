@@ -10,6 +10,7 @@ public class EnemiesSpawn : MonoBehaviour
     [Header("Random Spawn Positions")]
     public int xPos; //Ignore in Inspector
     public int zPos; //Ignore in Inspector
+    public float yPos;
     public int x1, x2, z1, z2;
 
     [Header("Random Spawn Numbers")]
@@ -26,9 +27,9 @@ public class EnemiesSpawn : MonoBehaviour
         while (enemyCount <= Random.Range(minSpawn, maxSpawn))
         {
             enemy.SetActive(true);
-            xPos = Random.Range(x1, x2); //-24, 15
-            zPos = Random.Range(z1, z2);  //35, 75
-            Instantiate(enemy, new Vector3(xPos, 0.05f, zPos), Quaternion.identity);
+            xPos = Random.Range(x1, x2);
+            zPos = Random.Range(z1, z2);
+            Instantiate(enemy, new Vector3(xPos, yPos, zPos), Quaternion.identity);
             yield return new WaitForSeconds(0.1f);
             enemyCount += 1;
         }

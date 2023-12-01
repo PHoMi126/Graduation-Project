@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class BigDoorInteract : DoorsFather
+public class DoorInteract : DoorsFather
 {
     private void Update()
     {
@@ -22,9 +22,11 @@ public class BigDoorInteract : DoorsFather
     {
         if (Input.GetKeyDown(interactKey))
         {
-            open = !open;
-            door1.DORotate(new Vector3(0, 90, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
-            door2.DORotate(new Vector3(0, -90, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
+            if (door2 == null)
+            {
+                open = !open;
+                door1.DOLocalRotate(new Vector3(0, -90, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
+            }
         }
     }
 
@@ -32,9 +34,11 @@ public class BigDoorInteract : DoorsFather
     {
         if (Input.GetKeyDown(interactKey))
         {
-            open = !open;
-            door1.DORotate(new Vector3(0, 0, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
-            door2.DORotate(new Vector3(0, 0, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
+            if (door2 == null)
+            {
+                open = !open;
+                door1.DOLocalRotate(new Vector3(0, 0, 0), cycleLength * 0.5f).SetEase(Ease.Linear);
+            }
         }
     }
 }

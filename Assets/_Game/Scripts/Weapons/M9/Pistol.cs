@@ -52,6 +52,7 @@ public class Pistol : GunFunctionsFather
     private void OnGunShot()
     {
         muzzleFlash.Play();
+        gunShotSound.Play();
     }
 
     public void StartReloadPistol()
@@ -60,6 +61,7 @@ public class Pistol : GunFunctionsFather
         {
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.pistolReload);
+            reloadSound.Play();
         }
     }
 

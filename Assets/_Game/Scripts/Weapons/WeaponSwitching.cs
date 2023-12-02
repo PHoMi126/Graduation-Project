@@ -10,6 +10,9 @@ public class WeaponSwitching : MonoBehaviour
     [Header("Switch Animation")]
     [SerializeField] AnimStates animStates;
 
+    [Header("Sounds")]
+    public AudioSource weaponSwitchSound;
+
     int selectedWeapon;
     float timeSinceLastSwitch;
 
@@ -52,7 +55,7 @@ public class WeaponSwitching : MonoBehaviour
         }
 
         //Set new KeyCode in array if null
-        if (weaponSwitchKeys == null) weaponSwitchKeys = new KeyCode[weapons.Length];
+        weaponSwitchKeys ??= new KeyCode[weapons.Length];
     }
 
     private void Select(int weaponIndex)

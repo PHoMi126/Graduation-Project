@@ -39,6 +39,10 @@ public class PlayerAction : MonoBehaviour
     [Header("Weapon Bob")]
     [SerializeField] WeaponBob weaponBob;
 
+    [Header("Sounds")]
+    public AudioSource walkSound;
+    public AudioSource sprintSound;
+
     internal CharacterController player = null;
 
     Vector2 currentDir = Vector2.zero;
@@ -56,6 +60,9 @@ public class PlayerAction : MonoBehaviour
     private void Update()
     {
         Actions();
+        Flashlight();
+        Crouch();
+        MoveSound();
 
         if (Input.GetKeyDown(jumpKey) && player.isGrounded)
         {
@@ -70,10 +77,6 @@ public class PlayerAction : MonoBehaviour
         {
             StopSprint();
         }
-
-        Flashlight();
-
-        Crouch();
     }
 
     private void Actions()
@@ -172,6 +175,28 @@ public class PlayerAction : MonoBehaviour
         else
         {
             flashlight.gameObject.SetActive(false);
+        }
+    }
+
+    private void MoveSound()
+    {
+        if (player.isGrounded && Input.GetKey(forward) || Input.GetKey(backward) || Input.GetKey(left) || Input.GetKey(right))
+        {
+            if (Input.GetKey(sprintKey))
+            {
+                walkSound.enabled = false;
+                sprintSound.enabled = true;
+            }
+            else
+            {
+                walkSound.enabled = true;
+                sprintSound.enabled = false;
+            }
+        }
+        else
+        {
+            walkSound.enabled = false;
+            sprintSound.enabled = false;
         }
     }
 }

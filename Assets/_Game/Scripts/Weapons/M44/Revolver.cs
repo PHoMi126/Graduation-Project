@@ -52,6 +52,7 @@ public class Revolver : GunFunctionsFather
     private void OnGunShot()
     {
         muzzleFlash.Play();
+        gunShotSound.Play();
     }
 
     public void StartReloadRevolver()
@@ -60,6 +61,7 @@ public class Revolver : GunFunctionsFather
         {
             StartCoroutine(Reload());
             animStates.ChangeAnim(AnimStates.AnimState.revolverReload);
+            reloadSound.Play();
         }
     }
 

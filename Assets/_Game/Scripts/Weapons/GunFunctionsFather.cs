@@ -22,9 +22,14 @@ public class GunFunctionsFather : MonoBehaviour
     [Header("Particle System")]
     public ParticleSystem muzzleFlash;
 
-    protected float timeSinceLastShot;
+    [Header("Sounds")]
+    public AudioSource gunShotSound;
+    public AudioSource reloadSound;
 
+    [Header("LayerMask")]
     public LayerMask layerMask;
+
+    protected float timeSinceLastShot;
     protected RaycastHit hit;
 
     protected bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);

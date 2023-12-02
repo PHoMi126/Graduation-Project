@@ -65,4 +65,23 @@ public class GunFunctionsFather : MonoBehaviour
             gunData.ammoReserve = 0;
         }
     }
+
+    protected void GunShotPhysic()
+    {
+        if (Physics.Raycast(cam.position, cam.forward, out hit, gunData.maxDistance, layerMask))
+        {
+            IDamagable damagable = hit.transform.GetComponent<IDamagable>();
+            damagable?.TakeDamage(gunData.damage);
+        }
+        gunData.currentAmmoInClip--;
+
+        timeSinceLastShot = 0f;
+        OnGunShot();
+    }
+
+    private void OnGunShot()
+    {
+        muzzleFlash.Play();
+        gunShotSound.Play();
+    }
 }

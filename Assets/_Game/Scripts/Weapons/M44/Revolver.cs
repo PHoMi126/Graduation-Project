@@ -26,6 +26,7 @@ public class Revolver : GunFunctionsFather
     private void OnDestroy()
     {
         WeaponActions.AttackInput -= M44Shoot;
+        WeaponActions.reloadInput -= StartReloadRevolver;
     }
 
     public void M44Shoot()
@@ -36,24 +37,12 @@ public class Revolver : GunFunctionsFather
             {
                 animStates.ChangeAnim(AnimStates.AnimState.revolverShoot);
 
-                if (Physics.Raycast(cam.position, cam.forward, out hit, gunData.maxDistance, layerMask))
-                {
-                    IDamagable damagable = hit.transform.GetComponent<IDamagable>();
-                    damagable?.TakeDamage(gunData.damage);
-                }
-                gunData.currentAmmoInClip--;
-
-                timeSinceLastShot = 0f;
-                OnGunShot();
+                GunShotPhysic();
             }
         }
     }
 
-    private void OnGunShot()
-    {
-        muzzleFlash.Play();
-        gunShotSound.Play();
-    }
+
 
     public void StartReloadRevolver()
     {

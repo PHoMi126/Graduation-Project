@@ -17,6 +17,7 @@ public class Pistol : GunFunctionsFather
     private void OnDestroy()
     {
         WeaponActions.AttackInput -= M9Shoot;
+        WeaponActions.reloadInput -= StartReloadPistol;
     }
 
     private void Update()
@@ -36,23 +37,9 @@ public class Pistol : GunFunctionsFather
             {
                 animStates.ChangeAnim(AnimStates.AnimState.pistolShoot);
 
-                if (Physics.Raycast(cam.position, cam.forward, out hit, gunData.maxDistance, layerMask))
-                {
-                    IDamagable damagable = hit.transform.GetComponent<IDamagable>();
-                    damagable?.TakeDamage(gunData.damage);
-                }
-
-                gunData.currentAmmoInClip--;
-                timeSinceLastShot = 0f;
-                OnGunShot();
+                GunShotPhysic();
             }
         }
-    }
-
-    private void OnGunShot()
-    {
-        muzzleFlash.Play();
-        gunShotSound.Play();
     }
 
     public void StartReloadPistol()

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Knife
   damage: 20
-  fireRate: 200
+  fireRate: 50
   maxDistance: 1

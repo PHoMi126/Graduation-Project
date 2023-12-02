@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class WeaponActions : MonoBehaviour
 {
-    public static Action AttackInput;
+    public static Action attackInput;
+    public static Action meleeAttackInput;
     public static Action reloadInput;
 
     [SerializeField] KeyCode reload;
@@ -12,12 +13,17 @@ public class WeaponActions : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            AttackInput?.Invoke();
+            attackInput?.Invoke();
         }
 
         if (Input.GetKeyDown(reload))
         {
             reloadInput?.Invoke();
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            meleeAttackInput?.Invoke();
         }
     }
 }

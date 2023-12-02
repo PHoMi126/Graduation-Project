@@ -10,13 +10,13 @@ public class Pistol : GunFunctionsFather
         gunData.ammoReserve = gunData.capacity - gunData.magSize;
 
         //Subcribe to events
-        WeaponActions.AttackInput += M9Shoot;
+        WeaponActions.attackInput += M9Shoot;
         WeaponActions.reloadInput += StartReloadPistol;
     }
 
     private void OnDestroy()
     {
-        WeaponActions.AttackInput -= M9Shoot;
+        WeaponActions.attackInput -= M9Shoot;
         WeaponActions.reloadInput -= StartReloadPistol;
     }
 

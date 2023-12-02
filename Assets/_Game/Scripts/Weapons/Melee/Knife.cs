@@ -23,7 +23,7 @@ public class Knife : MonoBehaviour
     private void Start()
     {
         animStates.ChangeAnim(AnimStates.AnimState.meleeIdle);
-        WeaponActions.AttackInput += KnifeAttack;
+        WeaponActions.meleeAttackInput += KnifeAttack;
     }
 
 
@@ -34,7 +34,7 @@ public class Knife : MonoBehaviour
         ammoCount.gameObject.SetActive(false);
     }
 
-    private bool CanSwing() => timeSinceLastSwing > 1f / (meleeData.fireRate / 60f);
+    private bool CanSwing() => timeSinceLastSwing > 0.5f / (meleeData.fireRate / 60f);
 
     public void KnifeAttack()
     {
@@ -60,7 +60,6 @@ public class Knife : MonoBehaviour
 
     private void OnDestroy()
     {
-        WeaponActions.AttackInput -= KnifeAttack;
-
+        WeaponActions.meleeAttackInput -= KnifeAttack;
     }
 }

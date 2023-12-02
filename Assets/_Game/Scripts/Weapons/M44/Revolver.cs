@@ -10,7 +10,7 @@ public class Revolver : GunFunctionsFather
         gunData.ammoReserve = gunData.capacity - gunData.magSize;
 
         //Subcribe to events
-        WeaponActions.AttackInput += M44Shoot;
+        WeaponActions.attackInput += M44Shoot;
         WeaponActions.reloadInput += StartReloadRevolver;
     }
 
@@ -25,7 +25,7 @@ public class Revolver : GunFunctionsFather
 
     private void OnDestroy()
     {
-        WeaponActions.AttackInput -= M44Shoot;
+        WeaponActions.attackInput -= M44Shoot;
         WeaponActions.reloadInput -= StartReloadRevolver;
     }
 
